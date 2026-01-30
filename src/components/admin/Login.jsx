@@ -21,7 +21,11 @@ const Login = () => {
       navigate('/admin/dashboard');
     } catch (err) {
       console.error(err);
-      setError('Invalid credentials');
+      if (err.code === 429) {
+        setError('Too many attempts. Please wait 15 minutes before trying again.');
+      } else {
+        setError('Invalid credentials. Please check your email and password.');
+      }
     } finally {
       setIsLoading(false);
     }
