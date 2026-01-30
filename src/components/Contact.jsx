@@ -166,8 +166,9 @@ const Contact = () => {
 
         {/* Footer Links */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-10 border-t border-slate-900 mt-20">
-          <p className="text-gray-500 text-sm mb-4 md:mb-0">
+          <p className="text-gray-500 text-sm mb-4 md:mb-0 relative group">
             © {new Date().getFullYear()} Balirwa Alvin Daniel. All rights reserved.
+            <a href="/admin" className="absolute -right-4 top-0 w-2 h-2 opacity-20 hover:opacity-100 cursor-pointer transition-opacity">.</a>
           </p>
 
           <div className="flex space-x-6">
