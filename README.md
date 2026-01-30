@@ -11,6 +11,8 @@ A high-performance, visually stunning professional portfolio website built to st
 
 ## ✨ Features
 
+- **🧠 Appwrite Integration**: Full backend integration for contact form submissions.
+- **🔐 Admin Portal**: Secure dashboard to view and manage incoming messages.
 - **🌌 Magical Hero Section**: Custom HTML5 Canvas particle constellation effect that reacts to mouse movement.
 - **🎨 Dynamic Typography**: Massive, responsive text with a continuous animated gradient loop.
 - **🔦 Spotlight Cards**: Interactive project cards with a "flashlight" hover effect that tracks your cursor.
@@ -22,6 +24,7 @@ A high-performance, visually stunning professional portfolio website built to st
 
 - **Framework**: [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Backend Service**: [Appwrite](https://appwrite.io/) (Database & Auth)
 - **Animations**: [Framer Motion](https://www.framer.com/motion/)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Graphics**: HTML5 Canvas API
@@ -41,7 +44,17 @@ A high-performance, visually stunning professional portfolio website built to st
     npm install
     ```
 
-3.  **Run the development server**
+3.  **Configure Environment Variables**
+    Create a `.env` file in the root directory and add your Appwrite credentials:
+
+    ```env
+    VITE_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+    VITE_APPWRITE_PROJECT_ID=your_project_id
+    VITE_APPWRITE_DATABASE_ID=your_database_id
+    VITE_APPWRITE_COLLECTION_ID=your_collection_id
+    ```
+
+4.  **Run the development server**
 
     ```bash
     npm run dev
@@ -49,7 +62,7 @@ A high-performance, visually stunning professional portfolio website built to st
 
     Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-4.  **Build for production**
+5.  **Build for production**
     ```bash
     npm run build
     ```
