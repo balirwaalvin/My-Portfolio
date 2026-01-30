@@ -1,16 +1,77 @@
-# React + Vite
+# ✨ Portfolio of Balirwa Alvin Daniel
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Portfolio Preview](https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&q=80&auto=format&fit=crop)
+_(Replace with a real screenshot of your hero section!)_
 
-Currently, two official plugins are available:
+A high-performance, visually stunning professional portfolio website built to standout. Features "magical" interactive animations, a custom particle physics engine, and premium glassmorphism UI design.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Live Demo
 
-## React Compiler
+[Insert Live Link Here]
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Features
 
-## Expanding the ESLint configuration
+- **🌌 Magical Hero Section**: Custom HTML5 Canvas particle constellation effect that reacts to mouse movement.
+- **🎨 Dynamic Typography**: Massive, responsive text with a continuous animated gradient loop.
+- **🔦 Spotlight Cards**: Interactive project cards with a "flashlight" hover effect that tracks your cursor.
+- **📜 Scroll Revelations**: Text and elements stagger in elegantly as you scroll down the page.
+- **🕶️ Premium Dark Mode**: Deep slate aesthetic with vibrant indigo/purple accents and glassmorphism.
+- **⚡ High Performance**: Built with Vite and React for instant loading and 60fps animations.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+- **Framework**: [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Graphics**: HTML5 Canvas API
+
+## 📦 Getting Started
+
+1.  **Clone the repository**
+
+    ```bash
+    git clone https://github.com/balirwaalvin/My-Portfolio.git
+    cd My-Portfolio
+    ```
+
+2.  **Install dependencies**
+
+    ```bash
+    npm install
+    ```
+
+3.  **Run the development server**
+
+    ```bash
+    npm run dev
+    ```
+
+    Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+4.  **Build for production**
+    ```bash
+    npm run build
+    ```
+
+## 📂 Project Structure
+
+```
+src/
+├── components/
+│   ├── ui/             # Reusable animated components (SpotlightCard, ParticleBackground)
+│   ├── Hero.jsx        # Main landing with Canvas effects
+│   ├── Navbar.jsx      # Glassmorphism navigation
+│   ├── Projects.jsx    # Project grid
+│   └── ...
+├── lib/                # Utilities (Tailwind merge)
+└── index.css           # Tailwind v4 imports & custom keyframes
+```
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+_Crafted with ❤️ by Balirwa Alvin Daniel_
