@@ -1,7 +1,6 @@
 # ✨ Portfolio of Balirwa Alvin Daniel
 
-![Portfolio Preview](https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&q=80&auto=format&fit=crop)
-_(Replace with a real screenshot of your hero section!)_
+![Portfolio Preview](https://firebasestorage.googleapis.com/v0/b/datasim-fi1q6.firebasestorage.app/o/Portfolio.png?alt=media&token=2b1f260d-5d6a-4913-b2bd-235b64b6e9f3)
 
 A high-performance, visually stunning professional portfolio website built to standout. Features "magical" interactive animations, a custom particle physics engine, and premium glassmorphism UI design.
 
