@@ -8,6 +8,9 @@ import Skills from './components/Skills';
 import Contact from './components/Contact';
 import Login from './components/admin/Login';
 import Dashboard from './components/admin/Dashboard';
+import ProjectsPage from './pages/ProjectsPage';
+import BlogListPage from './pages/BlogListPage';
+import BlogPostPage from './pages/BlogPostPage';
 
 const Portfolio = () => {
   return (
@@ -37,6 +40,9 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Portfolio />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/blog" element={<BlogListPage />} />
+        <Route path="/blog/:id" element={<BlogPostPage />} />
         <Route path="/admin" element={<Login />} />
         <Route 
           path="/admin/dashboard" 
