@@ -1,11 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SpotlightCard from '../components/ui/SpotlightCard';
-import { blogsData } from '../data/blogs';
+import { blogOperations } from '../lib/appwrite';
+import { blogsData } from '../data/blogs'; // Keep as fallback
+
 
 const BlogListPage = () => {
+  const [blogs, setBlogs] = useState(blogsData); // Use static data as default
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadBlogs();
+  }, []);
+
+  const loadBlogs = async () => {
+    try {
+      const appwriteBlogs = await blogOperations.getAllPublishedBlogs();
+      if (appwriteBlogs.length > 0) {
+        // Map Appwrite documents to blog format
+        const formattedBlogs = appwriteBlogs.map(blog => ({
+          id: blog.slug || blog.$id,
+          title: blog.title,
+          excerpt: blog.excerpt,
+          coverImage: blog.coverImage,
+          date: blog.createdAt || blog.$createdAt,
+          readTime: blog.readTime,
+          tags: blog.tags || [],
+          author: blog.author
+        }));
+        setBlogs(formattedBlogs);
+      }
+    } catch (error) {
+      console.error('Error loading blogs from Appwrite:', error);
+      // Fallback to static data is already set
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 pt-24 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">

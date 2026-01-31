@@ -1,14 +1,73 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Clock, User } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, User, Loader2 } from 'lucide-react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { blogsData } from '../data/blogs';
+import { blogsData } from '../data/blogs'; // Fallback
+import { blogOperations } from '../lib/appwrite';
+
 
 const BlogPostPage = () => {
   const { id } = useParams();
-  const blog = blogsData.find(b => b.id === id);
+  const [blog, setBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    loadBlog();
+  }, [id]);
+
+  const loadBlog = async () => {
+    try {
+      // Try to fetch from Appwrite first
+      const appwriteBlog = await blogOperations.getBlogBySlug(id);
+      if (appwriteBlog) {
+        setBlog({
+          id: appwriteBlog.slug || appwriteBlog.$id,
+          title: appwriteBlog.title,
+          excerpt: appwriteBlog.excerpt,
+          content: appwriteBlog.content,
+          coverImage: appwriteBlog.coverImage,
+          date: appwriteBlog.createdAt || appwriteBlog.$createdAt,
+          readTime: appwriteBlog.readTime,
+          tags: appwriteBlog.tags || [],
+          author: appwriteBlog.author
+        });
+      } else {
+        // Fallback to static data
+        const staticBlog = blogsData.find(b => b.id === id);
+        if (staticBlog) {
+          setBlog(staticBlog);
+        } else {
+          setNotFound(true);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading blog:', error);
+      // Fallback to static data
+      const staticBlog = blogsData.find(b => b.id === id);
+      if (staticBlog) {
+        setBlog(staticBlog);
+      } else {
+        setNotFound(true);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // If blog not found, redirect to blog list
+  if (notFound) {
+    return <Navigate to="/blog" replace />;
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <Loader2 size={48} className="text-indigo-500 animate-spin" />
+      </div>
+    );
+  }
+
   if (!blog) {
     return <Navigate to="/blog" replace />;
   }
