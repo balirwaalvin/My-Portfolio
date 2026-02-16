@@ -62,8 +62,8 @@ const BlogPostPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <Loader2 size={48} className="text-indigo-500 animate-spin" />
+      <div className="min-h-screen bg-[#050505] flex items-center justify-center">
+        <Loader2 size={48} className="text-red-500 animate-spin" />
       </div>
     );
   }
@@ -73,43 +73,45 @@ const BlogPostPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#050505] pt-28 pb-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Back Button */}
         <Link 
           to="/blog" 
-          className="inline-flex items-center text-indigo-400 hover:text-indigo-300 mb-8 transition-colors"
+          className="inline-flex items-center text-red-400 hover:text-red-300 mb-10 transition-colors group"
         >
-          <ArrowLeft size={20} className="mr-2" />
+          <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" />
           Back to Blog
         </Link>
 
         {/* Cover Image */}
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="aspect-video rounded-2xl overflow-hidden mb-8 shadow-2xl"
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="aspect-video rounded-2xl overflow-hidden mb-10 shadow-2xl border border-white/5 relative"
         >
           <img
             src={blog.coverImage}
             alt={blog.title}
             className="w-full h-full object-cover"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 to-transparent" />
         </motion.div>
 
         {/* Article Header */}
         <motion.article
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
+          transition={{ delay: 0.1, duration: 0.6 }}
           className="prose prose-invert prose-lg max-w-none"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold font-display text-white mb-6 leading-tight">
             {blog.title}
           </h1>
 
           {/* Meta Information */}
-          <div className="flex flex-wrap items-center gap-6 text-gray-400 mb-8 not-prose">
+          <div className="flex flex-wrap items-center gap-6 text-gray-500 mb-8 not-prose">
             <span className="flex items-center gap-2">
               <User size={18} />
               {blog.author}
@@ -129,16 +131,19 @@ const BlogPostPage = () => {
           </div>
 
           {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-8 not-prose">
+          <div className="flex flex-wrap gap-2 mb-10 not-prose">
             {blog.tags.map((tag) => (
               <span
                 key={tag}
-                className="px-3 py-1 text-sm font-medium text-indigo-300 bg-indigo-500/10 rounded-full border border-indigo-500/20"
+                className="px-3 py-1 text-sm font-medium text-red-400/70 bg-red-500/5 rounded-lg border border-red-500/10"
               >
                 {tag}
               </span>
             ))}
           </div>
+
+          {/* Divider */}
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-red-500/20 to-transparent mb-10" />
 
           {/* Content */}
           <div 
@@ -149,22 +154,22 @@ const BlogPostPage = () => {
                 .map(line => {
                   // Convert markdown-style headers
                   if (line.startsWith('## ')) {
-                    return `<h2 class="text-3xl font-bold text-white mt-12 mb-4">${line.substring(3)}</h2>`;
+                    return `<h2 class="text-3xl font-bold font-display text-white mt-14 mb-5">${line.substring(3)}</h2>`;
                   }
                   if (line.startsWith('### ')) {
-                    return `<h3 class="text-2xl font-bold text-white mt-8 mb-3">${line.substring(4)}</h3>`;
+                    return `<h3 class="text-2xl font-bold font-display text-white mt-10 mb-4">${line.substring(4)}</h3>`;
                   }
                   // Convert code blocks
                   if (line.startsWith('```')) {
-                    return line.replace('```', '<pre class="bg-slate-900 p-4 rounded-lg overflow-x-auto my-6"><code>').replace('```', '</code></pre>');
+                    return line.replace('```', '<pre class="bg-[#0a0a0a] p-5 rounded-xl overflow-x-auto my-6 border border-white/5"><code>').replace('```', '</code></pre>');
                   }
                   // Convert inline code
                   const codeRegex = /`([^`]+)`/g;
-                  line = line.replace(codeRegex, '<code class="bg-slate-900 px-2 py-1 rounded text-indigo-300">$1</code>');
+                  line = line.replace(codeRegex, '<code class="bg-[#0a0a0a] px-2 py-1 rounded-lg text-red-400 border border-white/5">$1</code>');
                   
                   // Regular paragraphs
                   if (line.trim() && !line.startsWith('<')) {
-                    return `<p class="mb-4">${line}</p>`;
+                    return `<p class="mb-5 text-gray-400">${line}</p>`;
                   }
                   return line;
                 })
@@ -178,15 +183,17 @@ const BlogPostPage = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="mt-16 pt-8 border-t border-slate-800"
+          className="mt-20 pt-10 border-t border-white/5"
         >
-          <Link 
-            to="/blog"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
-          >
-            <ArrowLeft size={20} />
-            View All Posts
-          </Link>
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <Link 
+              to="/blog"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded-xl transition-all shadow-lg shadow-red-500/10"
+            >
+              <ArrowLeft size={20} />
+              View All Posts
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
     </div>

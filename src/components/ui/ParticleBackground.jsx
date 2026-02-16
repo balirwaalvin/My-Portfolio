@@ -19,29 +19,32 @@ const ParticleBackground = () => {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 1.5;
-        this.vy = (Math.random() - 0.5) * 1.5;
-        this.size = Math.random() * 2 + 1;
-        this.color = `rgba(99, 102, 241, ${Math.random() * 0.5 + 0.1})`; // Indigo-ish
+        this.vx = (Math.random() - 0.5) * 0.8;
+        this.vy = (Math.random() - 0.5) * 0.8;
+        this.size = Math.random() * 2 + 0.5;
+        // Mix of red and white particles
+        const isRed = Math.random() > 0.4;
+        this.color = isRed 
+          ? `rgba(220, 38, 38, ${Math.random() * 0.4 + 0.1})` 
+          : `rgba(255, 255, 255, ${Math.random() * 0.15 + 0.05})`;
+        this.lineColor = isRed ? [220, 38, 38] : [255, 255, 255];
       }
 
       update() {
         this.x += this.vx;
         this.y += this.vy;
 
-        // Mouse interaction
+        // Mouse interaction - repel
         if (mouse.x != null) {
           const dx = mouse.x - this.x;
           const dy = mouse.y - this.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 150) {
+          if (distance < 180) {
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
-            const force = (150 - distance) / 150;
-            const directionX = forceDirectionX * force * this.size;
-            const directionY = forceDirectionY * force * this.size;
-            this.x -= directionX;
-            this.y -= directionY;
+            const force = (180 - distance) / 180;
+            this.x -= forceDirectionX * force * 2;
+            this.y -= forceDirectionY * force * 2;
           }
         }
 
@@ -60,7 +63,7 @@ const ParticleBackground = () => {
 
     const init = () => {
       particles = [];
-      const numberOfParticles = (canvas.width * canvas.height) / 15000;
+      const numberOfParticles = Math.min((canvas.width * canvas.height) / 18000, 120);
       for (let i = 0; i < numberOfParticles; i++) {
         particles.push(new Particle());
       }
@@ -73,16 +76,18 @@ const ParticleBackground = () => {
         particles[i].update();
         particles[i].draw();
 
-        // Connect particles
-        for (let j = i; j < particles.length; j++) {
+        // Connect particles with subtle lines
+        for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 120) {
+          if (distance < 140) {
+            const opacity = (1 - distance / 140) * 0.3;
+            const [r, g, b] = particles[i].lineColor;
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(99, 102, 241, ${1 - distance / 120})`;
-            ctx.lineWidth = 0.8;
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
+            ctx.lineWidth = 0.5;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();
@@ -93,9 +98,8 @@ const ParticleBackground = () => {
     };
 
     const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
+      mouse.x = e.x;
+      mouse.y = e.y;
     };
 
     const handleMouseLeave = () => {
@@ -107,13 +111,7 @@ const ParticleBackground = () => {
       resizeCanvas();
       init();
     });
-    
-    // Track mouse over the container, but since canvas is absolute, we track on window or canvas
-    // Ideally duplicate mouse tracking if component is full screen
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.x;
-      mouse.y = e.y;
-    });
+    window.addEventListener('mousemove', handleMouseMove);
 
     resizeCanvas();
     init();
@@ -121,6 +119,7 @@ const ParticleBackground = () => {
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

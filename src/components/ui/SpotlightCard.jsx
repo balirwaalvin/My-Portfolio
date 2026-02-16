@@ -39,13 +39,13 @@ const SpotlightCard = ({ children, className = "" }) => {
       onBlur={handleBlur}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative overflow-hidden rounded-xl border border-slate-800 bg-slate-900 ${className}`}
+      className={`relative overflow-hidden rounded-2xl border border-white/5 bg-[#0a0a0a] hover:border-red-500/20 transition-all duration-500 ${className}`}
     >
       <div
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-500"
         style={{
           opacity,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(99, 102, 241, 0.15), transparent 40%)`,
+          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(220, 38, 38, 0.1), transparent 40%)`,
         }}
       />
       <div className="relative h-full">

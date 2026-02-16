@@ -1,82 +1,189 @@
-import React, { useState } from 'react';
-import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '../lib/utils';
+import React, { useState, useEffect } from 'react';
+import { Menu, X, Home, FolderOpen, BookOpen, Wrench, MessageCircle } from 'lucide-react';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [atTop, setAtTop] = useState(true);
+  const { scrollY } = useScroll();
+  const location = useLocation();
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'Projects', href: '/projects', icon: FolderOpen },
+    { name: 'Blog', href: '/blog', icon: BookOpen },
+    { name: 'Skills', href: '#skills', icon: Wrench },
+    { name: 'Contact', href: '#contact', icon: MessageCircle },
   ];
 
-  return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-indigo-500/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 cursor-pointer">
-            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
-              Balirwa
-            </span>
-          </div>
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+    if (latest > previous && latest > 200) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+    setAtTop(latest < 50);
+  });
 
-          {/* Desktop Menu */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
-              {navLinks.map((link) => (
+  const isActive = (href) => {
+    if (href === '/') return location.pathname === '/';
+    if (href.startsWith('#')) return false;
+    return location.pathname.startsWith(href);
+  };
+
+  return (
+    <>
+      {/* Floating Navigation Card */}
+      <motion.nav
+        variants={{
+          visible: { y: 0, opacity: 1 },
+          hidden: { y: -100, opacity: 0 },
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500`}
+      >
+        {/* Desktop Floating Card */}
+        <div className="hidden md:block">
+          <motion.div
+            initial={{ y: -50, opacity: 0, scale: 0.9 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className={`flex items-center gap-1 px-2 py-2 rounded-2xl border transition-all duration-500 ${
+              atTop 
+                ? 'bg-black/40 border-white/5 backdrop-blur-sm' 
+                : 'bg-black/80 border-red-500/10 backdrop-blur-xl shadow-lg shadow-red-500/5'
+            }`}
+          >
+            {/* Logo */}
+            <a href="/" className="px-4 py-2 mr-2">
+              <motion.span 
+                className="text-xl font-bold font-display tracking-tight"
+                whileHover={{ scale: 1.05 }}
+              >
+                <span className="text-red-500">B</span>
+                <span className="text-white">alirwa</span>
+              </motion.span>
+            </a>
+
+            {/* Divider */}
+            <div className="w-px h-6 bg-white/10" />
+
+            {/* Nav Links */}
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              const active = isActive(link.href);
+              return (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium"
+                  className="relative group"
                 >
-                  {link.name}
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                      active 
+                        ? 'text-white bg-red-600/20' 
+                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <Icon size={16} className={active ? 'text-red-400' : 'text-gray-500 group-hover:text-red-400 transition-colors'} />
+                    {link.name}
+                  </motion.div>
+                  {active && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-red-500 rounded-full"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
                 </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-300 hover:text-white focus:outline-none"
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
+              );
+            })}
+          </motion.div>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
+        {/* Mobile Floating Button */}
+        <div className="md:hidden">
+          <motion.button
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-3 bg-black/80 backdrop-blur-xl border border-red-500/20 rounded-2xl text-white shadow-lg shadow-red-500/10"
+          >
+            {isOpen ? <X className="h-6 w-6 text-red-400" /> : <Menu className="h-6 w-6" />}
+          </motion.button>
+        </div>
+      </motion.nav>
+
+      {/* Mobile Full-Screen Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-slate-900 overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 md:hidden"
           >
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="text-gray-300 hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </div>
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/90 backdrop-blur-xl"
+              onClick={() => setIsOpen(false)}
+            />
+            
+            {/* Menu Card */}
+            <motion.div
+              initial={{ y: 50, opacity: 0, scale: 0.9 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: 50, opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85vw] max-w-sm"
+            >
+              <div className="bg-[#0a0a0a] border border-red-500/10 rounded-3xl p-8 shadow-2xl shadow-red-500/5">
+                {/* Logo at top */}
+                <div className="text-center mb-8">
+                  <span className="text-3xl font-bold font-display">
+                    <span className="text-red-500">B</span>
+                    <span className="text-white">alirwa</span>
+                  </span>
+                  <div className="w-12 h-0.5 bg-red-500/50 mx-auto mt-3" />
+                </div>
+
+                {/* Links */}
+                <div className="space-y-2">
+                  {navLinks.map((link, i) => {
+                    const Icon = link.icon;
+                    return (
+                      <motion.a
+                        key={link.name}
+                        href={link.href}
+                        onClick={() => setIsOpen(false)}
+                        initial={{ x: -30, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: i * 0.08, duration: 0.3 }}
+                        className="flex items-center gap-4 px-4 py-4 rounded-xl text-gray-300 hover:text-white hover:bg-red-500/10 transition-all group"
+                      >
+                        <Icon size={20} className="text-red-500/50 group-hover:text-red-400 transition-colors" />
+                        <span className="text-lg font-medium">{link.name}</span>
+                      </motion.a>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </>
   );
 };
 

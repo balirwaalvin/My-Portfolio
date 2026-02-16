@@ -1,48 +1,112 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Code, Server, Zap } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Code, Server, Zap, Sparkles } from 'lucide-react';
 import ScrollReveal from './ui/ScrollReveal';
+import { useRef } from 'react';
 
 const About = () => {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+
+  const stats = [
+    { value: '3+', label: 'Years Experience' },
+    { value: '15+', label: 'Projects Built' },
+    { value: '99.9%', label: 'Code Accuracy' },
+  ];
+
   return (
-    <section id="about" className="py-20 bg-slate-950 relative overflow-hidden">
-      {/* Decorative Background Elements */}
+    <section id="about" ref={sectionRef} className="py-32 bg-[#050505] relative overflow-hidden">
+      {/* Floating decorative elements */}
       <motion.div
-        animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-20 right-10 text-indigo-500/10"
+        style={{ y: backgroundY }}
+        className="absolute top-0 right-0 w-96 h-96 bg-red-500/[0.03] rounded-full blur-[100px] pointer-events-none"
+      />
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        className="absolute top-20 right-20 w-40 h-40 border border-red-500/5 rounded-full pointer-events-none"
+      />
+      <motion.div
+        animate={{ rotate: -360 }}
+        transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+        className="absolute bottom-20 left-20 w-32 h-32 border border-white/5 rounded-full pointer-events-none"
+      />
+
+      {/* Decorative Background Icons */}
+      <motion.div
+        animate={{ y: [0, -15, 0], rotate: [0, 3, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-24 right-16 text-red-500/[0.06]"
       >
-        <Code size={120} />
+        <Code size={140} strokeWidth={1} />
       </motion.div>
       <motion.div
-        animate={{ y: [0, 20, 0], rotate: [0, -5, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-20 left-10 text-purple-500/10"
+        animate={{ y: [0, 15, 0], rotate: [0, -3, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-24 left-16 text-white/[0.03]"
       >
-        <Server size={100} />
+        <Server size={120} strokeWidth={1} />
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl blur-lg opacity-30 transform -rotate-6"></div>
-            <img 
-              src="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?w=800&q=80" 
-              alt="Programming Setup" 
-              className="relative rounded-2xl shadow-2xl border border-slate-800"
-            />
-          </motion.div>
+          {/* Image with creative frame */}
+          <ScrollReveal direction="left">
+            <div className="relative group">
+              {/* Red accent border */}
+              <motion.div 
+                className="absolute -inset-1 bg-gradient-to-br from-red-600/30 via-red-500/10 to-transparent rounded-3xl blur-sm group-hover:blur-md transition-all duration-700"
+                animate={{ opacity: [0.5, 0.8, 0.5] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              />
+              
+              {/* Corner accents */}
+              <div className="absolute -top-2 -left-2 w-8 h-8 border-t-2 border-l-2 border-red-500/50 rounded-tl-lg" />
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-2 border-r-2 border-red-500/50 rounded-br-lg" />
+              
+              <img 
+                src="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?w=800&q=80" 
+                alt="Programming Setup" 
+                className="relative rounded-2xl shadow-2xl border border-white/5 grayscale hover:grayscale-0 transition-all duration-700"
+              />
 
+              {/* Stats overlay card */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6, duration: 0.6 }}
+                className="absolute -bottom-6 -right-6 bg-[#0a0a0a]/90 backdrop-blur-xl border border-red-500/10 rounded-2xl p-5 shadow-xl"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-red-500/10 rounded-xl flex items-center justify-center">
+                    <Sparkles size={20} className="text-red-400" />
+                  </div>
+                  <div>
+                    <div className="text-white font-bold text-lg">Passionate</div>
+                    <div className="text-gray-500 text-sm">About Clean Code</div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </ScrollReveal>
+
+          {/* Content */}
           <div>
             <ScrollReveal>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Who is <span className="text-indigo-500">Balirwa?</span>
+              <span className="text-red-500 text-sm font-semibold tracking-[0.2em] uppercase mb-4 block">About Me</span>
+            </ScrollReveal>
+            
+            <ScrollReveal delay={0.1}>
+              <h2 className="text-4xl md:text-5xl font-bold font-display text-white mb-8 leading-tight">
+                Who is <span className="text-red-500">Balirwa</span>
+                <span className="text-red-500">?</span>
               </h2>
             </ScrollReveal>
             
@@ -52,35 +116,61 @@ const About = () => {
               </p>
             </ScrollReveal>
 
-            <ScrollReveal delay={0.4}>
-              <p className="text-gray-400 text-lg mb-8 leading-relaxed">
+            <ScrollReveal delay={0.3}>
+              <p className="text-gray-500 text-lg mb-10 leading-relaxed">
                 When I'm not coding, you can find me exploring new technologies, contributing to open source, or optimizing my development workflow.
               </p>
             </ScrollReveal>
 
+            {/* Stats row */}
+            <ScrollReveal delay={0.4}>
+              <div className="flex gap-8 mb-10">
+                {stats.map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5 + i * 0.1 }}
+                    className="text-center"
+                  >
+                    <div className="text-3xl font-bold text-white font-display">{stat.value}</div>
+                    <div className="text-sm text-gray-500 mt-1">{stat.label}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </ScrollReveal>
+
+            {/* Skill badges */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <ScrollReveal delay={0.6}>
-                <div className="p-4 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-4 hover:border-indigo-500/50 transition-colors">
-                  <div className="p-3 bg-indigo-500/10 rounded-lg text-indigo-400">
+              <ScrollReveal delay={0.5}>
+                <motion.div 
+                  whileHover={{ scale: 1.02, borderColor: 'rgba(220, 38, 38, 0.3)' }}
+                  className="p-5 bg-[#0a0a0a] rounded-2xl border border-white/5 flex items-center gap-4 transition-all duration-300 group"
+                >
+                  <div className="p-3 bg-red-500/10 rounded-xl text-red-400 group-hover:bg-red-500/20 transition-colors">
                     <Code size={24} />
                   </div>
                   <div>
                     <h4 className="font-bold text-white">Full Stack</h4>
-                    <p className="text-sm text-gray-400">Frontend & Backend</p>
+                    <p className="text-sm text-gray-500">Frontend & Backend</p>
                   </div>
-                </div>
+                </motion.div>
               </ScrollReveal>
 
-              <ScrollReveal delay={0.7}>
-                <div className="p-4 bg-slate-900 rounded-xl border border-slate-800 flex items-center gap-4 hover:border-purple-500/50 transition-colors">
-                  <div className="p-3 bg-purple-500/10 rounded-lg text-purple-400">
+              <ScrollReveal delay={0.6}>
+                <motion.div 
+                  whileHover={{ scale: 1.02, borderColor: 'rgba(220, 38, 38, 0.3)' }}
+                  className="p-5 bg-[#0a0a0a] rounded-2xl border border-white/5 flex items-center gap-4 transition-all duration-300 group"
+                >
+                  <div className="p-3 bg-white/5 rounded-xl text-gray-300 group-hover:bg-red-500/10 group-hover:text-red-400 transition-colors">
                     <Server size={24} />
                   </div>
                   <div>
                     <h4 className="font-bold text-white">System Design</h4>
-                    <p className="text-sm text-gray-400">Scalable Architecture</p>
+                    <p className="text-sm text-gray-500">Scalable Architecture</p>
                   </div>
-                </div>
+                </motion.div>
               </ScrollReveal>
             </div>
           </div>

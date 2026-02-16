@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -12,45 +13,75 @@ import ProjectsPage from './pages/ProjectsPage';
 import BlogListPage from './pages/BlogListPage';
 import BlogPostPage from './pages/BlogPostPage';
 
+const pageTransition = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+  transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
+};
+
 const Portfolio = () => {
   return (
-    <>
+    <motion.div {...pageTransition}>
       <Navbar />
-      <main>
+      <main className="grain">
         <Hero />
         <About />
         <Projects />
         <Skills />
         <Contact />
       </main>
-    </>
+    </motion.div>
   );
 };
 
 const ProtectedRoute = ({ children }) => {
-  const session = localStorage.getItem('isAdmin'); // Simple client-side check for now, real auth happens in component or context
+  const session = localStorage.getItem('isAdmin');
   if (!session) {
     return <Navigate to="/admin" replace />;
   }
   return children;
 };
 
-const App = () => {
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  
   return (
-    <Router>
-      <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Portfolio />} />
-        <Route path="/projects" element={<ProjectsPage />} />
-        <Route path="/blog" element={<BlogListPage />} />
-        <Route path="/blog/:id" element={<BlogPostPage />} />
+        <Route path="/projects" element={
+          <motion.div {...pageTransition}>
+            <Navbar />
+            <ProjectsPage />
+          </motion.div>
+        } />
+        <Route path="/blog" element={
+          <motion.div {...pageTransition}>
+            <Navbar />
+            <BlogListPage />
+          </motion.div>
+        } />
+        <Route path="/blog/:id" element={
+          <motion.div {...pageTransition}>
+            <Navbar />
+            <BlogPostPage />
+          </motion.div>
+        } />
         <Route path="/admin" element={<Login />} />
         <Route 
           path="/admin/dashboard" 
-          element={
-             <Dashboard />
-          } 
+          element={<Dashboard />} 
         />
       </Routes>
+    </AnimatePresence>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <AnimatedRoutes />
     </Router>
   );
 };
