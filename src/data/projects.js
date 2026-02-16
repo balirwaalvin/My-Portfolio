@@ -12,25 +12,25 @@ export const projectsData = [
     ]
   },
   {
-    title: 'AI Dashboard',
-    description: 'Real-time analytics dashboard powered by machine learning models. Visualizes data trends, user behavior, and predictive analytics in an intuitive interface.',
-    tags: ['React', 'Python', 'FastAPI', 'D3.js'],
-    github: '#',
-    demo: '#',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+    title: 'NutriCan Mobile',
+    description: 'Personalized recovery nutrition guided by advanced AI intelligence.',
+    tags: ['TypeScript', 'JavaScript', 'HTML'],
+    github: 'https://github.com/balirwaalvin/NutriCan-Mobile',
+    demo: 'https://nutrican-820803743332.us-west1.run.app/',
+    image: '/NutriCan.png',
     screenshots: [
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+      '/NutriCan.png',
     ]
   },
   {
-    title: 'Social Media App',
-    description: 'Feature-rich social networking app with real-time chat, media sharing, and user profiles. Built for seamless interaction and high performance.',
-    tags: ['React Native', 'Firebase', 'Redux'],
-    github: '#',
-    demo: '#',
-    image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80',
+    title: 'Lydistories',
+    description: 'Access a growing collection of books, study guides, articles, and expert documentation. Read anywhere, anytime — knowledge is just a tap away',
+    tags: ['JavaScript', 'Python', 'CSS', 'Others'],
+    github: 'https://github.com/balirwaalvin/New-Lydistories',
+    demo: 'https://newlydistories-3yo4g.ondigitalocean.app/',
+    image: '/Lydistories.png',
     screenshots: [
-      'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80',
+      '/Lydistories.png',
     ]
   }
 ];

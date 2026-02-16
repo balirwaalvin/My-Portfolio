@@ -4,32 +4,9 @@ import { ExternalLink, Github } from 'lucide-react';
 import SpotlightCard from './ui/SpotlightCard';
 import ScrollReveal from './ui/ScrollReveal';
 
-const projects = [
-  {
-    title: 'E-Commerce Platform',
-    description: 'A modern shopping experience built with Next.js, Stripe, and Tailwind CSS.',
-    tags: ['Next.js', 'TypeScript', 'Stripe', 'Supabase'],
-    github: '#',
-    demo: '#',
-    image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80'
-  },
-  {
-    title: 'AI Dashboard',
-    description: 'Real-time analytics dashboard powered by machine learning models.',
-    tags: ['React', 'Python', 'FastAPI', 'D3.js'],
-    github: '#',
-    demo: '#',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80'
-  },
-  {
-    title: 'Social Media App',
-    description: 'Feature-rich social networking app with real-time chat and media sharing.',
-    tags: ['React Native', 'Firebase', 'Redux'],
-    github: '#',
-    demo: '#',
-    image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80'
-  }
-];
+import { projectsData } from '../data/projects';
+// Use first 3 projects for featured section
+const projects = projectsData.slice(0, 3);
 
 const ProjectCard = ({ project, index }) => {
   return (
@@ -106,6 +83,16 @@ const Projects = () => {
           {projects.map((project, index) => (
             <ProjectCard key={index} project={project} index={index} />
           ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <a
+            href="/projects"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-transparent border border-indigo-500 text-indigo-400 hover:bg-indigo-500/10 hover:text-white rounded-full transition-all duration-300 transform hover:scale-105"
+          >
+            View All Projects
+            <ExternalLink size={20} />
+          </a>
         </div>
       </div>
     </section>
