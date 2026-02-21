@@ -5,6 +5,22 @@ import ScrollReveal from './ui/ScrollReveal';
 import { databases } from '../lib/appwrite';
 import { ID } from 'appwrite';
 
+const hasAppwriteConfig = () => {
+  const required = [
+    import.meta.env.VITE_APPWRITE_ENDPOINT,
+    import.meta.env.VITE_APPWRITE_PROJECT_ID,
+    import.meta.env.VITE_APPWRITE_DATABASE_ID,
+    import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+  ];
+  return required.every((value) => Boolean(value));
+};
+
+const openMailClientFallback = ({ name, email, message }) => {
+  const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+  window.location.href = `mailto:hello@alvin.dev?subject=${subject}&body=${body}`;
+};
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -12,7 +28,7 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'fallback' | 'error' | null
   const [focusedField, setFocusedField] = useState(null);
 
   const handleChange = (e) => {
@@ -23,6 +39,14 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
+
+    if (!hasAppwriteConfig()) {
+      openMailClientFallback(formData);
+      setSubmitStatus('fallback');
+      setFormData({ name: '', email: '', message: '' });
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       await databases.createDocument(
@@ -35,7 +59,9 @@ const Contact = () => {
       setFormData({ name: '', email: '', message: '' });
     } catch (error) {
       console.error('Error sending message:', error);
-      setSubmitStatus('error');
+      openMailClientFallback(formData);
+      setSubmitStatus('fallback');
+      setFormData({ name: '', email: '', message: '' });
     } finally {
       setIsSubmitting(false);
     }
@@ -157,7 +183,7 @@ const Contact = () => {
                   className={`w-full px-5 py-4 bg-white/[0.02] border rounded-xl focus:ring-2 focus:ring-red-500/30 focus:border-red-500/30 outline-none text-white transition-all placeholder-gray-700 ${
                     focusedField === 'name' ? 'border-red-500/30' : 'border-white/5'
                   }`}
-                  placeholder="John Doe"
+                  placeholder="Wanja Grace"
                 />
               </div>
 
@@ -175,7 +201,7 @@ const Contact = () => {
                   className={`w-full px-5 py-4 bg-white/[0.02] border rounded-xl focus:ring-2 focus:ring-red-500/30 focus:border-red-500/30 outline-none text-white transition-all placeholder-gray-700 ${
                     focusedField === 'email' ? 'border-red-500/30' : 'border-white/5'
                   }`}
-                  placeholder="john@example.com"
+                  placeholder="wanja@email.com"
                 />
               </div>
 
@@ -224,7 +250,18 @@ const Contact = () => {
                   className="p-4 bg-green-500/5 border border-green-500/10 rounded-xl text-green-400 text-center text-sm flex items-center justify-center gap-2"
                 >
                   <Sparkles size={16} />
-                  Message sent successfully! I'll get back to you soon.
+                  Message sent successfully via Appwrite! I'll get back to you soon.
+                </motion.div>
+              )}
+
+              {submitStatus === 'fallback' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 bg-amber-500/5 border border-amber-500/10 rounded-xl text-amber-300 text-center text-sm flex items-center justify-center gap-2"
+                >
+                  <Sparkles size={16} />
+                  Appwrite unavailable, so your email app was opened to send the message.
                 </motion.div>
               )}
 

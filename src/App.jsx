@@ -10,6 +10,8 @@ import Contact from './components/Contact';
 import Login from './components/admin/Login';
 import Dashboard from './components/admin/Dashboard';
 import ProjectsPage from './pages/ProjectsPage';
+import SkillsPage from './pages/SkillsPage';
+import ContactPage from './pages/ContactPage';
 import BlogListPage from './pages/BlogListPage';
 import BlogPostPage from './pages/BlogPostPage';
 
@@ -54,6 +56,18 @@ const AnimatedRoutes = () => {
           <motion.div {...pageTransition}>
             <Navbar />
             <ProjectsPage />
+          </motion.div>
+        } />
+        <Route path="/skills" element={
+          <motion.div {...pageTransition}>
+            <Navbar />
+            <SkillsPage />
+          </motion.div>
+        } />
+        <Route path="/contact" element={
+          <motion.div {...pageTransition}>
+            <Navbar />
+            <ContactPage />
           </motion.div>
         } />
         <Route path="/blog" element={

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Menu, X, Home, FolderOpen, BookOpen, Wrench, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,8 +14,8 @@ const Navbar = () => {
     { name: 'Home', href: '/', icon: Home },
     { name: 'Projects', href: '/projects', icon: FolderOpen },
     { name: 'Blog', href: '/blog', icon: BookOpen },
-    { name: 'Skills', href: '#skills', icon: Wrench },
-    { name: 'Contact', href: '#contact', icon: MessageCircle },
+    { name: 'Skills', href: '/skills', icon: Wrench },
+    { name: 'Contact', href: '/contact', icon: MessageCircle },
   ];
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -30,7 +30,6 @@ const Navbar = () => {
 
   const isActive = (href) => {
     if (href === '/') return location.pathname === '/';
-    if (href.startsWith('#')) return false;
     return location.pathname.startsWith(href);
   };
 
@@ -59,7 +58,7 @@ const Navbar = () => {
             }`}
           >
             {/* Logo */}
-            <a href="/" className="px-4 py-2 mr-2">
+            <Link to="/" className="px-4 py-2 mr-2">
               <motion.span 
                 className="text-xl font-bold font-display tracking-tight"
                 whileHover={{ scale: 1.05 }}
@@ -67,7 +66,7 @@ const Navbar = () => {
                 <span className="text-red-500">B</span>
                 <span className="text-white">alirwa</span>
               </motion.span>
-            </a>
+            </Link>
 
             {/* Divider */}
             <div className="w-px h-6 bg-white/10" />
@@ -77,23 +76,21 @@ const Navbar = () => {
               const Icon = link.icon;
               const active = isActive(link.href);
               return (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="relative group"
-                >
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
-                      active 
-                        ? 'text-white bg-red-600/20' 
-                        : 'text-gray-400 hover:text-white hover:bg-white/5'
-                    }`}
-                  >
-                    <Icon size={16} className={active ? 'text-red-400' : 'text-gray-500 group-hover:text-red-400 transition-colors'} />
-                    {link.name}
-                  </motion.div>
+                <div key={link.name} className="relative group">
+                  <Link to={link.href}>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                        active 
+                          ? 'text-white bg-red-600/20' 
+                          : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      <Icon size={16} className={active ? 'text-red-400' : 'text-gray-500 group-hover:text-red-400 transition-colors'} />
+                      {link.name}
+                    </motion.div>
+                  </Link>
                   {active && (
                     <motion.div
                       layoutId="activeTab"
@@ -101,7 +98,7 @@ const Navbar = () => {
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
-                </a>
+                </div>
               );
             })}
           </motion.div>
@@ -163,18 +160,21 @@ const Navbar = () => {
                   {navLinks.map((link, i) => {
                     const Icon = link.icon;
                     return (
-                      <motion.a
+                      <motion.div
                         key={link.name}
-                        href={link.href}
-                        onClick={() => setIsOpen(false)}
                         initial={{ x: -30, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: i * 0.08, duration: 0.3 }}
-                        className="flex items-center gap-4 px-4 py-4 rounded-xl text-gray-300 hover:text-white hover:bg-red-500/10 transition-all group"
                       >
-                        <Icon size={20} className="text-red-500/50 group-hover:text-red-400 transition-colors" />
-                        <span className="text-lg font-medium">{link.name}</span>
-                      </motion.a>
+                        <Link
+                          to={link.href}
+                          onClick={() => setIsOpen(false)}
+                          className="w-full flex items-center gap-4 px-4 py-4 rounded-xl text-gray-300 hover:text-white hover:bg-red-500/10 transition-all group"
+                        >
+                          <Icon size={20} className="text-red-500/50 group-hover:text-red-400 transition-colors" />
+                          <span className="text-lg font-medium">{link.name}</span>
+                        </Link>
+                      </motion.div>
                     );
                   })}
                 </div>

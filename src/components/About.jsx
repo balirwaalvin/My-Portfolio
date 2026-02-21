@@ -112,13 +112,13 @@ const About = () => {
             
             <ScrollReveal delay={0.2}>
               <p className="text-gray-400 text-lg mb-6 leading-relaxed">
-                I'm a software engineer with a passion for building scalable, high-performance applications. With a deep understanding of modern web technologies, I treat code like an art form—crafting solutions that are not only functional but also beautiful and intuitive.
+                I'm a software engineer with a passion for building scalable, high-performance applications. With a deep understanding of modern web & mobile technologies, I treat code like an art form—crafting solutions that are not only functional but also beautiful and intuitive.
               </p>
             </ScrollReveal>
 
             <ScrollReveal delay={0.3}>
               <p className="text-gray-500 text-lg mb-10 leading-relaxed">
-                When I'm not coding, you can find me exploring new technologies, contributing to open source, or optimizing my development workflow.
+                When I'm not coding, you can find me exploring new technologies, contributing to open source, or optimizing my development workflow and furthermore, love for adventure.
               </p>
             </ScrollReveal>
 
