@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Zap, Server, Wrench, Layers, Star, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Zap, Server, Wrench, Layers, Star, ChevronRight, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SpotlightCard from '../components/ui/SpotlightCard';
+import SkillsUniverse from '../components/ui/SkillsUniverse';
 
 /* ── skill data with proficiency levels ── */
 const skillCategories = [
@@ -141,8 +142,11 @@ const OrbitRing = ({ radius, duration, dotCount, color }) => (
 /* ── main page ── */
 const SkillsPage = () => {
   const [activeCategory, setActiveCategory] = useState('frontend');
+  const [viewMode, setViewMode] = useState('3d'); // '3d' or 'detail'
   const active = skillCategories.find((c) => c.id === activeCategory);
   const ac = colorMap[active.color];
+
+  const filterMap = { frontend: 'frontend', backend: 'backend', devops: 'devops' };
 
   return (
     <div className="min-h-screen bg-[#050505] pt-28 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -178,36 +182,81 @@ const SkillsPage = () => {
           </motion.p>
         </div>
 
-        {/* ── Category Tabs ── */}
-        <div className="flex flex-wrap gap-3 mb-14">
-          {skillCategories.map((cat, i) => {
-            const Icon = cat.icon;
-            const isActive = cat.id === activeCategory;
-            const c = colorMap[cat.color];
-            return (
-              <motion.button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold border transition-all duration-300 cursor-pointer ${
-                  isActive
-                    ? `${c.bg} ${c.border} ${c.text} shadow-lg ${c.glow}`
-                    : 'bg-white/[0.02] border-white/5 text-gray-500 hover:text-white hover:border-white/10'
-                }`}
-              >
-                <Icon size={18} />
-                {cat.category}
-              </motion.button>
-            );
-          })}
+        {/* ── View Mode Toggle + Category Tabs ── */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-14">
+          <div className="flex flex-wrap gap-3">
+            {skillCategories.map((cat, i) => {
+              const Icon = cat.icon;
+              const isActive = cat.id === activeCategory;
+              const c = colorMap[cat.color];
+              return (
+                <motion.button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.5 }}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.97 }}
+                  className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold border transition-all duration-300 cursor-pointer ${
+                    isActive
+                      ? `${c.bg} ${c.border} ${c.text} shadow-lg ${c.glow}`
+                      : 'bg-white/[0.02] border-white/5 text-gray-500 hover:text-white hover:border-white/10'
+                  }`}
+                >
+                  <Icon size={18} />
+                  {cat.category}
+                </motion.button>
+              );
+            })}
+          </div>
+
+          {/* View toggle */}
+          <div className="flex gap-2 bg-white/[0.02] border border-white/5 rounded-xl p-1">
+            <button
+              onClick={() => setViewMode('3d')}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                viewMode === '3d'
+                  ? 'bg-red-500/15 text-red-400 border border-red-500/20'
+                  : 'text-gray-500 hover:text-white border border-transparent'
+              }`}
+            >
+              <Globe size={14} />
+              3D Universe
+            </button>
+            <button
+              onClick={() => setViewMode('detail')}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                viewMode === 'detail'
+                  ? 'bg-red-500/15 text-red-400 border border-red-500/20'
+                  : 'text-gray-500 hover:text-white border border-transparent'
+              }`}
+            >
+              <Layers size={14} />
+              Detailed View
+            </button>
+          </div>
         </div>
+
+        {/* ── 3D Universe View ── */}
+        <AnimatePresence mode="wait">
+          {viewMode === '3d' && (
+            <motion.div
+              key="3d-view"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="mb-14"
+            >
+              <SkillsUniverse filter={filterMap[activeCategory] || 'all'} />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* ── Active Category Details ── */}
         <AnimatePresence mode="wait">
+          {viewMode === 'detail' && (
           <motion.div
             key={active.id}
             initial={{ opacity: 0, y: 30 }}
@@ -288,6 +337,7 @@ const SkillsPage = () => {
               </div>
             </div>
           </motion.div>
+          )}
         </AnimatePresence>
 
         {/* ── All Skills Grid (quick glance) ── */}
