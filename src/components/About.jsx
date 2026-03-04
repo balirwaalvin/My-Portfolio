@@ -71,8 +71,8 @@ const About = () => {
               <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-2 border-r-2 border-red-500/50 rounded-br-lg" />
               
               <img 
-                src="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?w=800&q=80" 
-                alt="Programming Setup" 
+                src="/badd%20at%20google.png" 
+                alt="Balirwa at Google" 
                 className="relative rounded-2xl shadow-2xl border border-white/5 grayscale hover:grayscale-0 transition-all duration-700"
               />
 
