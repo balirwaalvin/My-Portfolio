@@ -18,7 +18,7 @@ const hasAppwriteConfig = () => {
 const openMailClientFallback = ({ name, email, message }) => {
   const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
   const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-  window.location.href = `mailto:hello@alvin.dev?subject=${subject}&body=${body}`;
+  window.location.href = `mailto:support@balirwalvin.me?subject=${subject}&body=${body}`;
 };
 
 const Contact = () => {

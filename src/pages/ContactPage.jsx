@@ -20,7 +20,7 @@ const hasAppwriteConfig = () => {
 const openMailClientFallback = ({ name, email, message }) => {
   const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
   const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-  window.location.href = `mailto:hello@alvin.dev?subject=${subject}&body=${body}`;
+  window.location.href = `mailto:support@balirwalvin.me?subject=${subject}&body=${body}`;
 };
 
 /* ── floating decoration blobs ── */
@@ -50,7 +50,7 @@ const socialLinks = [
 
 /* ── info cards data ── */
 const infoCards = [
-  { icon: Mail, title: 'Email', value: 'hello@alvin.dev', href: 'mailto:hello@alvin.dev' },
+  { icon: Mail, title: 'Email', value: 'support@balirwalvin.me', href: 'mailto:support@balirwalvin.me' },
   { icon: MapPin, title: 'Location', value: 'Kampala, Uganda', href: null },
   { icon: Clock, title: 'Timezone', value: 'EAT (UTC +3)', href: null },
   { icon: MessageSquare, title: 'Response Time', value: 'Within 24 hours', href: null },
@@ -349,7 +349,7 @@ const ContactPage = () => {
                 </p>
 
                 <motion.a
-                  href="mailto:hello@alvin.dev?subject=Schedule a Call"
+                  href="mailto:support@balirwalvin.me?subject=Schedule a Call"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   className="inline-flex items-center gap-2 px-6 py-3 bg-white/[0.03] hover:bg-red-500/10 text-white text-sm font-semibold rounded-xl border border-white/5 hover:border-red-500/20 transition-all"
