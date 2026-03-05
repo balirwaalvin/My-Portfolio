@@ -27,7 +27,7 @@ export const projectsData = [
     description: 'Access a growing collection of books, study guides, articles, and expert documentation. Read anywhere, anytime — knowledge is just a tap away',
     tags: ['JavaScript', 'Python', 'CSS', 'Others'],
     github: 'https://github.com/balirwaalvin/New-Lydistories',
-    demo: 'https://newlydistories-3yo4g.ondigitalocean.app/',
+    demo: 'https://lydistories-wuof8.ondigitalocean.app/',
     image: '/Lydistories.png',
     screenshots: [
       '/Lydistories.png',
