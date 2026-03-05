@@ -123,13 +123,13 @@ const Contact = () => {
 
             <ScrollReveal delay={0.3}>
               <a 
-                href="mailto:hello@alvin.dev" 
+                href="mailto:support@balirwalvin.me" 
                 className="inline-flex items-center gap-3 text-gray-400 hover:text-red-400 transition-colors group mb-10"
               >
                 <div className="p-3 bg-red-500/10 rounded-xl group-hover:bg-red-500/20 transition-colors">
                   <Mail size={20} className="text-red-400" />
                 </div>
-                <span className="text-lg">hello@alvin.dev</span>
+                <span className="text-lg">support@balirwalvin.me</span>
                 <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
             </ScrollReveal>
