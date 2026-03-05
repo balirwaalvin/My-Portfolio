@@ -16,7 +16,7 @@ export const projectsData = [
     description: 'Personalized recovery nutrition guided by advanced AI intelligence.',
     tags: ['TypeScript', 'JavaScript', 'HTML'],
     github: 'https://github.com/balirwaalvin/NutriCan-Mobile',
-    demo: 'https://nutrican-820803743332.us-west1.run.app/',
+    demo: 'https://nutrican-votoh.ondigitalocean.app/',
     image: '/NutriCan.png',
     screenshots: [
       '/NutriCan.png',
